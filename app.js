@@ -1,43 +1,40 @@
-// define Globel variable which store array of books
+// Define global variable to store array of books
 let bookData;
 
-//get Book Data from API
+// Get Book Data from API
 async function getBook() {
-  //fetch function return promises
-  //take time so i write "await"
   await fetch("https://api.freeapi.app/api/v1/public/books")
-    .then((res) => {
-      return res.json();
-    })
+    .then((res) => res.json())
     .then((data) => {
       bookData = data.data.data;
     })
     .catch(() => {
-      alert("Something Wants wrong in Fetching Data");
+      alert("Something went wrong in fetching data");
     });
   setBooks(bookData);
 }
 getBook();
 
-//desplay book data in frontend
-async function setBooks(boookData) {
+// Display book data in frontend
+async function setBooks(bookData) {
   const bookList = document.querySelector(".book-list");
+  bookList.innerHTML = ""; // Clear previous content
 
   bookData.forEach((element) => {
-    //create div to display single book detail
+    // Create div to display single book detail
     const bookCard = document.createElement("div");
     bookCard.className = "book";
 
-    //Store book information in variable
-    const bookTitle = element.volumeInfo.title;
-    const imagePath = element.volumeInfo.imageLinks.thumbnail;
-    const bookAuthor = element.volumeInfo.authors[0];
-    const bookPublisher = element.volumeInfo.publisher;
-    const publishDate = element.volumeInfo.publishedDate;
+    // Store book information in variables
+    const bookTitle = element.volumeInfo.title || "No Title";
+    const imagePath = element.volumeInfo.imageLinks?.thumbnail || "";
+    const bookAuthor = element.volumeInfo.authors?.[0] || "Unknown Author";
+    const bookPublisher = element.volumeInfo.publisher || "Unknown Publisher";
+    const publishDate = element.volumeInfo.publishedDate || "No Date";
 
     bookCard.innerHTML = `
       <div class="thumbnail">
-        <img src="${imagePath}">
+        <img src="${imagePath}" alt="${bookTitle}">
       </div>
       <div class="book-info">
         <div class="book-author">
@@ -47,10 +44,10 @@ async function setBooks(boookData) {
           ${bookTitle}
         </div>
         <div class="publisher">
-          <b>Saler :</b> ${bookPublisher}
+          <b>Seller:</b> ${bookPublisher}
         </div>
         <div class="published-date">
-          <b>Date :</b> ${publishDate}
+          <b>Date:</b> ${publishDate}
         </div>
       </div>
     `;
@@ -60,15 +57,14 @@ async function setBooks(boookData) {
   setView();
 }
 
-//call search funtion on every chnage inpute value
+// Search function to filter by title and author
 const search = document.querySelector(".searchBook");
 search.addEventListener("input", () => {
   searchBook();
 });
 
-//search funtion it's campare with title and author both
 function searchBook() {
-  const input = document.querySelector(".searchBook").value.toLowerCase();
+  const input = search.value.toLowerCase();
   const bookList = document.querySelectorAll(".book");
 
   bookList.forEach((book) => {
@@ -83,8 +79,50 @@ function searchBook() {
   });
 }
 
+// Sort books by title or date
+const sortTitleBtn = document.getElementById("sortTitle");
+const sortDateBtn = document.getElementById("sortDate");
+
+sortTitleBtn.addEventListener("click", () => {
+  sortBooks();
+});
+
+sortDateBtn.addEventListener("click", () => {
+  sortBookByDate();
+});
+
+//sort with book title
+function sortBooks() {
+  bookData.sort((a, b) => {
+    const titleA = a.volumeInfo.title.toLowerCase();
+    const titleB = b.volumeInfo.title.toLowerCase();
+    return titleA.localeCompare(titleB);//it's compare two strings 
+  });
+  setBooks(bookData);
+}
+
+//sort with book published date
+function sortBookByDate() {
+  bookData.sort((a, b) => {
+    const dateA = new Date(a.volumeInfo.publishedDate );
+    const dateB = new Date(b.volumeInfo.publishedDate );
+    return dateA - dateB;
+  });
+  setBooks(bookData);
+}
+
+
+function sortBookByDate() {
+  bookData.sort((a, b) => {
+    const dateA = new Date(a.volumeInfo.publishedDate || "1970-01-01");
+    const dateB = new Date(b.volumeInfo.publishedDate || "1970-01-01");
+    return dateA - dateB;
+  });
+  setBooks(bookData);
+}
+
+// Keep setView() as it is
 function setView() {
-  //Toggle btn for grid view and list view
   const toggleBtn = document.getElementById("toggleBtn");
   const bookContainer = document.querySelector(".book-list");
   const bookList = document.querySelectorAll(".book");
@@ -96,24 +134,21 @@ function setView() {
     if (isGridView) {
       toggleBtn.innerText = "Grid View";
       bookList.forEach((book) => {
-        book.style.flexDirection = "initial"; 
+        book.style.flexDirection = "initial";
         bookContainer.style.display = "flex";
-        bookContainer.style.flexDirection = "column"; 
+        bookContainer.style.flexDirection = "column";
         book.style.width = "700px";
         bookContainer.style.alignItems = "center";
       });
-    }
-    else{
+    } else {
       toggleBtn.innerText = "List View";
       bookList.forEach((book) => {
-        book.style.flexDirection = "column"; 
+        book.style.flexDirection = "column";
         bookContainer.style.display = "grid";
         bookContainer.style.flexDirection = "row";
-        book.style.width = "100%"; 
-        bookContainer.style.alignItems = "normal"; 
+        book.style.width = "100%";
+        bookContainer.style.alignItems = "normal";
       });
     }
   });
 }
-
-//toggle between list view and grid is crazy.
