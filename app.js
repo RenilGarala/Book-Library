@@ -34,25 +34,22 @@ async function setBooks(boookData) {
     const bookAuthor = element.volumeInfo.authors[0];
     const bookPublisher = element.volumeInfo.publisher;
     const publishDate = element.volumeInfo.publishedDate;
-    
 
     bookCard.innerHTML = `
       <div class="thumbnail">
         <img src="${imagePath}">
       </div>
+      <div class="book-author">
+        By ${bookAuthor}
+      </div>
       <div class="book-title">
         ${bookTitle}
       </div>
-      <div class="book-author">
-        ${bookAuthor}
+      <div class="publisher">
+        Saler : ${bookPublisher}
       </div>
-      <div class="publish-info">
-        <div class="publisher">
-          ${bookPublisher}
-        </div>
-        <div class="published-date">
-          ${publishDate}
-        </div>
+      <div class="published-date">
+        Date : ${publishDate}
       </div>
     `;
     bookList.appendChild(bookCard);
@@ -60,17 +57,16 @@ async function setBooks(boookData) {
 }
 
 //call search funtion on every chnage inpute value
-const search = document.querySelector('.searchBook');
-search.addEventListener("input", ()=>{
+const search = document.querySelector(".searchBook");
+search.addEventListener("input", () => {
   searchBook();
-})
+});
 
 function searchBook() {
   const input = document.querySelector(".searchBook").value.toLowerCase();
   const bookList = document.querySelectorAll(".book");
 
   bookList.forEach((book) => {
-  
     const title = book.querySelector(".book-title").textContent.toLowerCase();
     const author = book.querySelector(".book-author").textContent.toLowerCase();
 
