@@ -48,8 +48,7 @@ body {
     color: #fff;
     font-size: 16px;
     cursor: pointer;
-    transition: 0.3s;
-    outline: none;
+
 }
 
 .book-list {
@@ -60,14 +59,15 @@ body {
     align-items: normal;
 }
 
-
+a{
+    text-decoration: none;
+}
 
 .book {
     background: #1e1e1e;  
     border: 1px solid #333;  
     border-radius: 10px;
     overflow: hidden;
-    transition: 0.3s;
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     display: flex;
@@ -91,7 +91,6 @@ body {
     width: 100%;
     height: 300px;
     object-fit: cover;
-    filter: brightness(0.9);
     border-radius: 5px;
 }
 

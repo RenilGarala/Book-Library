@@ -31,25 +31,32 @@ async function setBooks(bookData) {
     const bookAuthor = element.volumeInfo.authors?.[0] || "Unknown Author";
     const bookPublisher = element.volumeInfo.publisher || "Unknown Publisher";
     const publishDate = element.volumeInfo.publishedDate || "No Date";
-
+    const infoLink = element.volumeInfo.infoLink
+    console.log(infoLink);
+    
     bookCard.innerHTML = `
       <div class="thumbnail">
-        <img src="${imagePath}" alt="${bookTitle}">
+        <a href="${infoLink}" target="_blank">
+          <img src="${imagePath}" alt="${bookTitle}">
+        </a>
       </div>
-      <div class="book-info">
-        <div class="book-author">
-          By ${bookAuthor}
+
+      <a href="${infoLink}" target="_blank">
+        <div class="book-info">
+          <div class="book-author">
+            By ${bookAuthor}
+          </div>
+          <div class="book-title">
+            ${bookTitle}
+          </div>
+          <div class="publisher">
+            <b>Seller:</b> ${bookPublisher}
+          </div>
+          <div class="published-date">
+            <b>Date:</b> ${publishDate}
+          </div>
         </div>
-        <div class="book-title">
-          ${bookTitle}
-        </div>
-        <div class="publisher">
-          <b>Seller:</b> ${bookPublisher}
-        </div>
-        <div class="published-date">
-          <b>Date:</b> ${publishDate}
-        </div>
-      </div>
+      </a>
     `;
     bookList.appendChild(bookCard);
   });
