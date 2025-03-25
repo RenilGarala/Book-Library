@@ -1,3 +1,5 @@
+<img width="1440" alt="Screenshot 2025-03-25 at 6 24 03 PM" src="https://github.com/user-attachments/assets/7ad51fbb-fbfd-4391-952b-54aa62fd8591" />
+
 # Book Library Website  
 
 A dynamic **Book Library** website that fetches and displays book data from **FreeAPI.app**. This project helps practice working with **API requests**, handling **JSON data**, and rendering dynamic content using JavaScript.  
